@@ -1,6 +1,6 @@
 import React from "react";
 
-const Home = () => {
+const Introduction = () => {
   return (
     <div className="min-h-screen">
       {/** Introduction Content */}
@@ -20,4 +20,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Introduction; 

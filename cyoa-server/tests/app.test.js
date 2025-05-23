@@ -3,8 +3,18 @@ const app = require('../src/app');
 
 describe('GET /', () => {
     it('should return 200 and a message', async () => {
-        const res = await request(app).get('/');
-        expect(res.statusCode).toBe(200);
-        expect(res.body).toHaveProperty('message', 'Ok');
+        const response = await request(app).get('/');
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty('message', 'Welcome to the CYOA API');
+    });
+});
+
+describe('GET /next', () => {
+    it('should return story segment with choices', async () => {
+        const response = await request(app).get('/next');
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body).toHaveProperty('choices');
+        expect(Array.isArray(response.body.choices)).toBe(true);
     });
 });
