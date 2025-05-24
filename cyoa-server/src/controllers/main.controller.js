@@ -5,7 +5,14 @@ exports.intro = (request, response) => {
     });
 };
 
-exports.next = (request, response) => {
+exports.generateStory = (request, response) => {
+    const story = generateStory();
+    response.json({
+        story: story
+    });
+};
+
+exports.nextStoryPrompt = (request, response) => {
     response.json({
         message: 'Next story segment',
         currentPage: 1,
