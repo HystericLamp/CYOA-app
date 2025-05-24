@@ -1,6 +1,6 @@
 exports.intro = (request, response) => {
     response.json({ 
-        message: 'Welcome to the CYOA API',
+        message: 'Ok',
         status: 'active'
     });
 };

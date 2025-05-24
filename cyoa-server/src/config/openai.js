@@ -1,3 +1,4 @@
+require('dotenv').config();
 const OpenAI = require("openai");
 
 const openai = new OpenAI({
@@ -6,4 +7,4 @@ const openai = new OpenAI({
 
 const MODEL = process.env.OPENAI_MODEL || 'gpt-3.5-turbo';
 
-module.exports = openai;
+module.exports = { openai, MODEL };

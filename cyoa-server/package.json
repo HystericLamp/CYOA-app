@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:integration": "jest tests/integration --runInBand",
+    "test:unit": "jest --testPathIgnorePatterns=tests/integration"
   },
   "keywords": [],
   "author": "",
