@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { generatePromptResponse, generateIntro } = require('../../src/services/story.service');
-const { scenarios } = require('../../src/data/intro.scenarios');
+const { scenarios, getRandomScenario } = require('../../src/data/intro.scenarios');
 
 describe('OpenAI Integration', () => {
     beforeAll(() => {
@@ -30,8 +30,7 @@ describe('OpenAI Integration', () => {
     });
 
     it('should generate a story intro', async () => {
-        const randomIndex = Math.floor(Math.random() * scenarios.length);
-        const introScenario = scenarios[randomIndex];
+        const introScenario = getRandomScenario();
         
         console.log('Intro Scenario:', introScenario);
 

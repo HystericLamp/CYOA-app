@@ -10,3 +10,9 @@ exports.scenarios = [
     "You're the only one who realizes the same day is repeating. Everyone else acts like nothing's wrong—except for the girl at the diner, who stares at you and whispers, 'You're awake too.'",
     "While exploring an abandoned museum, you brush dust off a strange artifact. It pulses and binds to your wrist. A voice fills your mind: 'Host accepted. Trial begins now.'"
 ];
+
+const scenarios = exports.scenarios;
+exports.getRandomScenario = () => {
+    const randomIndex = Math.floor(Math.random() * scenarios.length);
+    return scenarios[randomIndex];
+};
