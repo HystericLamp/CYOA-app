@@ -1,11 +1,20 @@
 const { openai, MODEL } = require('../config/openai');
 
 /**
- * Generate a response from the OpenAI API
- * @param {string} prompt - The prompt to generate a response from
+ * Generate a response from the OpenAI API based on the user's action
+ * @param {string} userAction - The user's action to generate a response from
  * @returns {string} - The response from the OpenAI API
  */
-exports.generatePromptResponse = async (prompt) => {
+exports.generateNextStory = async (userAction) => {
+    const prompt = `
+    The user has made the following choice: "${userAction}"
+    Please continue the story based on the user's choice.
+    Provide a result of the user's choice to the story.
+    The result should be a maximum of 2 paragraphs.
+    And provide 3 different choices for the user to choose from to continue the story, unless result is a dead end to the story.
+    The choices should be in the format of "1.", "2.", "3.", etc.
+    `;
+
     try {
         const completion = await openai.chat.completions.create({
             model: MODEL,
@@ -29,7 +38,7 @@ exports.generatePromptResponse = async (prompt) => {
 }
 
 
-const generatePromptResponse = exports.generatePromptResponse;
+const generateNextStory = exports.generateNextStory;
 
 /**
  * Generate 3 choices from an intro scenario
@@ -42,12 +51,26 @@ exports.generateIntro = async (introScenario) => {
     You are given a scenario and you need to generate a story based on the scenario.
     Scenario: "${introScenario}"
     Please provide at least 3 different choices for the user to choose from to get the story started.
+    Also, continue this for the next story segment(s) based on the user's choice.
     The choices should be in the format of "1.", "2.", "3.", etc.
     `;
 
-    const response = await generatePromptResponse(prompt);
+    const response = await generateNextStory(prompt);
 
     return response;
+}
+
+/**
+ * Extract the result of the user's choice from a string
+ * Should be used after the generateNextStory function
+ * Gets the paragraph before the first choice
+ * @param {string} resultText - The text containing the result of the user's choice
+ * @returns {string} - The result of the user's choice
+ */
+exports.extractResult = (resultText) => {
+    const resultRegex = /^[\s\S]*?(?=\n\s*1\.)/;
+    const result = resultText.match(resultRegex);
+    return result[0].trim();
 }
 
 /**
@@ -56,7 +79,7 @@ exports.generateIntro = async (introScenario) => {
  * @returns {string[]} - An array of choices
  */
 exports.extractChoices = (choicesText) => {
-    const choiceRegex = /\d+\.\s+([\s\S]*?)(?=\n\d+\.|\n*$)/g;
+    const choiceRegex = /^\s*\d+\.\s+(.+)$/gm;
 
     const choices = []
     let match;

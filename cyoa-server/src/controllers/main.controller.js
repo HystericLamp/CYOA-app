@@ -1,5 +1,5 @@
 const { getRandomScenario } = require('../data/intro.scenarios');
-const { generateIntro, generatePromptResponse, extractChoices } = require('../services/story.service');
+const { generateIntro, generateNextStory, extractChoices, extractResult } = require('../services/story.service');
 
 /**
  * Check if the server is running
@@ -15,7 +15,7 @@ exports.intro = (request, response) => {
 
 /**
  * Generate an intro to story with 3 choices
- * Should be used in the GET request to generate the first story
+ * Should be used in the GET request to generate the Intro to the story
  * @param {*} request 
  * @param {*} response 
  */
@@ -26,21 +26,34 @@ exports.generateIntroStory = (request, response) => {
     
     response.json({
         scenario: scenario,
-        first_choice: choices[0],
-        second_choice: choices[1],
-        third_choice: choices[2]
+        choices: choices
     });
 };
 
-// TODO: Implement a POST request to generate a next story prompt
-// Take user action and generate the next story scenario
+/**
+ * Generate a next story prompt based on the user's action
+ * Should be used in the POST request to generate the next story prompt
+ * Returns the result of the user's choice, and 3 choices for the next part of the story
+ * @param {*} request 
+ * @param {*} response 
+ */
 exports.nextStoryPrompt = (request, response) => {
-    response.json({
-        message: 'Next story segment',
-        currentPage: 1,
-        choices: [
-            { id: 1, text: 'Go left' },
-            { id: 2, text: 'Go right' }
-        ]
-    });
+    const { userAction } = request.body;
+    const nextStory = generateNextStory(userAction);
+    const result = extractResult(nextStory);
+    const choices = extractChoices(nextStory);
+
+    if (choices.length === 0) {
+        // If there are no choices, the story is over
+        response.json({
+            result: result,
+            end: true
+        });
+    } else {
+        // If there are choices, the story continues
+        response.json({
+            result: result,
+            choices: choices
+        });
+    }
 };

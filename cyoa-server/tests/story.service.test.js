@@ -1,5 +1,5 @@
 const request = require('supertest');
-const { generatePromptResponse } = require('../src/services/story.service');
+const { generateNextStory } = require('../src/services/story.service');
 const { openai } = require('../src/config/openai');
 
 // Mock the OpenAI module
@@ -20,7 +20,7 @@ describe('Story Service', () => {
         jest.clearAllMocks();
     });
 
-    describe('generatePromptResponse', () => {
+    describe('generateNextStory', () => {
         it('should successfully generate a response from OpenAI', async () => {
             // Mock successful API response
             const mockResponse = {
@@ -34,11 +34,22 @@ describe('Story Service', () => {
             };
             openai.chat.completions.create.mockResolvedValue(mockResponse);
 
-            const result = await generatePromptResponse('Test prompt');
+            const userAction = 'Test prompt';
+            const result = await generateNextStory(userAction);
             expect(result).toBe('This is a test response');
+
+            // Formatted poorly like this to match the expected format in the generateNextStory function
+            const content = `
+    The user has made the following choice: "${userAction}"
+    Please continue the story based on the user's choice.
+    Provide a result of the user's choice to the story.
+    The result should be a maximum of 2 paragraphs.
+    And provide 3 different choices for the user to choose from to continue the story, unless result is a dead end to the story.
+    The choices should be in the format of "1.", "2.", "3.", etc.
+    `;
             expect(openai.chat.completions.create).toHaveBeenCalledWith({
-                model: expect.any(String),
-                messages: [{ role: 'user', content: 'Test prompt' }]
+                model: "gpt-3.5-turbo",
+                messages: [{ role: 'user', content: content }]
             });
         });
 
@@ -47,7 +58,7 @@ describe('Story Service', () => {
             apiError.name = 'APIError';
             openai.chat.completions.create.mockRejectedValue(apiError);
 
-            await expect(generatePromptResponse('Test prompt'))
+            await expect(generateNextStory('Test prompt'))
                 .rejects
                 .toThrow('OpenAI API Error: API Error');
         });
@@ -57,7 +68,7 @@ describe('Story Service', () => {
             connectionError.name = 'APIConnectionError';
             openai.chat.completions.create.mockRejectedValue(connectionError);
 
-            await expect(generatePromptResponse('Test prompt'))
+            await expect(generateNextStory('Test prompt'))
                 .rejects
                 .toThrow('Failed to connect to OpenAI API. Please check your internet connection.');
         });
@@ -67,7 +78,7 @@ describe('Story Service', () => {
             rateLimitError.name = 'RateLimitError';
             openai.chat.completions.create.mockRejectedValue(rateLimitError);
 
-            await expect(generatePromptResponse('Test prompt'))
+            await expect(generateNextStory('Test prompt'))
                 .rejects
                 .toThrow('OpenAI API rate limit exceeded. Please try again later.');
         });
@@ -77,7 +88,7 @@ describe('Story Service', () => {
             authError.name = 'AuthenticationError';
             openai.chat.completions.create.mockRejectedValue(authError);
 
-            await expect(generatePromptResponse('Test prompt'))
+            await expect(generateNextStory('Test prompt'))
                 .rejects
                 .toThrow('Invalid OpenAI API key. Please check your configuration.');
         });
@@ -86,7 +97,7 @@ describe('Story Service', () => {
             const unexpectedError = new Error('Unexpected error');
             openai.chat.completions.create.mockRejectedValue(unexpectedError);
 
-            await expect(generatePromptResponse('Test prompt'))
+            await expect(generateNextStory('Test prompt'))
                 .rejects
                 .toThrow('Error generating response: Unexpected error');
         });
