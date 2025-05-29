@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
+.env
+
+# Production environment variables
+.env.production
+
+# Development environment variables
+.env.development

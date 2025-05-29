@@ -19,9 +19,9 @@ exports.intro = (request, response) => {
  * @param {*} request 
  * @param {*} response 
  */
-exports.generateIntroStory = (request, response) => {
+exports.generateIntroStory = async(request, response) => {
     const scenario = getRandomScenario();
-    const story = generateIntro(scenario);
+    const story = await generateIntro(scenario);
     const choices = extractChoices(story);
     
     response.json({
@@ -37,9 +37,9 @@ exports.generateIntroStory = (request, response) => {
  * @param {*} request 
  * @param {*} response 
  */
-exports.nextStoryPrompt = (request, response) => {
+exports.nextStoryPrompt = async (request, response) => {
     const { userAction } = request.body;
-    const nextStory = generateNextStory(userAction);
+    const nextStory = await generateNextStory(userAction);
     const result = extractResult(nextStory);
     const choices = extractChoices(nextStory);
 

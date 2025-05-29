@@ -37,9 +37,6 @@ exports.generateNextStory = async (userAction) => {
     }
 }
 
-
-const generateNextStory = exports.generateNextStory;
-
 /**
  * Generate 3 choices from an intro scenario
  * @param {string} introScenario - The intro scenario to a story
@@ -55,9 +52,16 @@ exports.generateIntro = async (introScenario) => {
     The choices should be in the format of "1.", "2.", "3.", etc.
     `;
 
-    const response = await generateNextStory(prompt);
+    try {
+        const completion = await openai.chat.completions.create({
+            model: MODEL,
+            messages: [{ role: 'user', content: prompt }],
+        });
 
-    return response;
+        return completion.choices[0].message.content;
+    } catch (error) {
+        throw new Error(`Error generating response: ${error.message}`);
+    }
 }
 
 /**
