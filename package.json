@@ -1,0 +1,23 @@
+{
+  "name": "cyoa-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix cyoa-server\" \"npm run dev --prefix cyoa-front\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HystericLamp/CYOA-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HystericLamp/CYOA-app/issues"
+  },
+  "homepage": "https://github.com/HystericLamp/CYOA-app#readme",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

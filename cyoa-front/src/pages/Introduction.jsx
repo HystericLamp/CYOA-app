@@ -1,6 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
+import { getIntro } from '../services/introService';
+import { CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
 
 const Introduction = () => {
+  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState('');
+
+  useEffect(() => {
+    const fetchIntro = async () => {
+      try {
+        const data = await getIntro();
+        setMessage(data.message);
+        setStatus(data.status);
+
+        console.log('message:', message, 'status:', status);
+      } catch (error) {
+        console.error('Error fetching intro:', error);
+      }
+    };
+
+    fetchIntro();
+  }, []);
+
   return (
     <div className="min-h-screen">
       {/** Introduction Content */}
@@ -10,9 +31,16 @@ const Introduction = () => {
             Create your Own Adventure
           </h2>
           <p className="text-gray-700">
-            Welcome to my CYOA site! <br />
-            This is a simple CYOA site that allows you to create your own
+            Welcome to my CYOA app! <br />
+            This is a simple CYOA app that allows you to create your own
             adventure.
+
+            {/** For Testing Backend Fetch */}
+            {message === 'Ok' && status === 'active' ? (
+              <CheckIcon className="w-6 h-6 text-green-500" />
+            ) : (
+              <XMarkIcon className="w-6 h-6 text-red-500" />
+            )}
           </p>
         </div>
       </main>

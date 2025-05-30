@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css'
 
 import Layout from './components/Layout';
-import Home from './pages/Home'
+import Introduction from './pages/Introduction'
 import Cyoa from './pages/Cyoa'
 
 createRoot(document.getElementById('root')).render(
@@ -12,7 +12,7 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
+          <Route index element={<Introduction />} />
           <Route path="story" element={<Cyoa />} />
         </Route>
       </Routes>
