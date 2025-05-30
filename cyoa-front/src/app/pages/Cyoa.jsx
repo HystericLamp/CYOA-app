@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 
 const Cyoa = () => {
+    // TODO: Make buttons based on the number of choices available
+    // Make buttons hold choices
+    // Update storyboard
     const [story, setStory] = useState("You are in a dark forest. Do you go left or right?");
     const [userInput, setUserInput] = useState("");
 

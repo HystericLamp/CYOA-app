@@ -4,8 +4,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css'
 
 import Layout from './components/Layout';
-import Introduction from './pages/Introduction'
-import Cyoa from './pages/Cyoa'
+import Introduction from './app/pages/Introduction'
+import Cyoa from './app/pages/Cyoa'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

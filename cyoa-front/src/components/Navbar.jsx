@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
     return (
         <header>
-            <nav class="bg-white border-b border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 dark:border-gray-700">
-                <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+            <nav className="bg-white border-b border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 dark:border-gray-700">
+                <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
                     <Link to="/" className="text-xl font-bold text-gray-900 dark:text-white">
                         Create your own Adventure
                     </Link>

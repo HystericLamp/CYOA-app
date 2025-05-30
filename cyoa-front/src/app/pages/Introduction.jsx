@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getIntro } from '../services/introService';
+import { getIntro } from '../../features/intro/api/introService';
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
 
 const Introduction = () => {
@@ -12,8 +12,6 @@ const Introduction = () => {
         const data = await getIntro();
         setMessage(data.message);
         setStatus(data.status);
-
-        console.log('message:', message, 'status:', status);
       } catch (error) {
         console.error('Error fetching intro:', error);
       }
@@ -24,12 +22,14 @@ const Introduction = () => {
 
   return (
     <div className="min-h-screen">
-      {/** Introduction Content */}
       <main className="flex justify-center items-center min-h-[calc(100vh-64px)]">
         <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md text-center">
+          
+          {/** Introduction Content */}
           <h2 className="text-xl font-bold mb-4">
             Create your Own Adventure
           </h2>
+
           <p className="text-gray-700">
             Welcome to my CYOA app! <br />
             This is a simple CYOA app that allows you to create your own
