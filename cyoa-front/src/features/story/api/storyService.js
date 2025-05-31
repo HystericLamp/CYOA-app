@@ -1,5 +1,6 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+// I am making multiple calls for this. IDK why.
 export const getStoryIntro = async (endpoint) => {
     try {
         const response = await fetch(`${API_BASE_URL}/${endpoint}`);

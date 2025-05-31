@@ -5,7 +5,7 @@ import './index.css'
 
 import Layout from './components/Layout';
 import Introduction from './app/pages/Introduction'
-import Cyoa from './app/pages/Cyoa'
+import Story from './app/pages/Story'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -13,7 +13,7 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Introduction />} />
-          <Route path="story" element={<Cyoa />} />
+          <Route path="story" element={<Story />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -19,10 +19,10 @@ const Navbar = () => {
                         </Link>
 
                         <Link
-                            to="/cyoa"
+                            to="/story"
                             className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white"
                         >
-                            Play
+                            Story
                         </Link>
                     </div>
                 </div>
