@@ -11,7 +11,7 @@ exports.generateNextStory = async (userAction) => {
     Please continue the story based on the user's choice.
     Provide a result of the user's choice to the story.
     The result should be a maximum of 2 paragraphs.
-    And provide 3 different choices for the user to choose from to continue the story, unless result is a dead end to the story.
+    And provide a maximum of 3 different choices for the user to choose from to continue the story, unless result is a dead end to the story.
     The choices should be in the format of "1.", "2.", "3.", etc.
     `;
 
@@ -47,7 +47,7 @@ exports.generateIntro = async (introScenario) => {
     You are a storyteller.
     You are given a scenario and you need to generate a story based on the scenario.
     Scenario: "${introScenario}"
-    Please provide at least 3 different choices for the user to choose from to get the story started.
+    Please provide a maximum of 3 different choices for the user to choose from to get the story started.
     Also, continue this for the next story segment(s) based on the user's choice.
     The choices should be in the format of "1.", "2.", "3.", etc.
     `;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getStoryIntro, postNextStoryPrompt } from "../api/storyService";
 
 export const useStory = () => {
@@ -6,8 +6,12 @@ export const useStory = () => {
     const [scenario, setScenario] = useState('');
     const [choices, setChoices] = useState([]);
     const [selectedChoice, setChoice] = useState('');
+    const hasFetched = useRef(false);
 
     useEffect(() => {
+        if (hasFetched.current) return;
+        hasFetched.current = true;
+
         const fetchStoryIntro = async () => {
             try {
                 const data = await getStoryIntro('story');
@@ -25,8 +29,14 @@ export const useStory = () => {
     const submitStoryChoice = async (event) => {
         event.preventDefault();
 
+        if (typeof selectedChoice !== 'string') {
+            console.error('Invalid choice value', selectedChoice);
+            return;
+        }
+
         try {
-            const data = await postNextStoryPrompt('story', { selectedChoice });
+            const data = await postNextStoryPrompt('story', { userAction: selectedChoice });
+
             setScenario(data.result);
             setStory(prev => [...prev, selectedChoice, data.result]);
             setChoices([]);

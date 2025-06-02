@@ -1,8 +1,9 @@
 import React from 'react';
-import { useStory } from '../hooks/useStory';
+
+import { useStoryContext } from '../context/StoryContext';
 
 function StoryBoard() {
-    const { story } = useStory();
+    const { story } = useStoryContext();
     
     return (
         <p className="text-gray-800 mb-6">

@@ -1,8 +1,8 @@
 import React from 'react';
-import { useStory } from '../hooks/useStory';
+import { useStoryContext } from '../context/StoryContext';
 
 function ChoicesForm() {
-    const { submitStoryChoice, setChoice, choices } = useStory();
+    const { submitStoryChoice, setChoice, choices } = useStoryContext();
 
     return (
         <form onSubmit={submitStoryChoice} className="p-4">
@@ -12,7 +12,7 @@ function ChoicesForm() {
                         type='submit'
                         key={index} 
                         value={choice}
-                        onClick={setChoice}
+                        onClick={() => setChoice(choice)}
                         className='bg-blue-500 text-white px-4 py-2 rounded'
                     >
                         {choice}
