@@ -9,7 +9,7 @@ function StoryBoard() {
         <p className="text-gray-800 mb-6">
             {story.map((line, index) => (
                 <React.Fragment key={index}>
-                    {line}
+                    {line}<br />
                     <br/>
                 </React.Fragment>
             ))}

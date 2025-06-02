@@ -21,27 +21,26 @@ const Introduction = () => {
   }, []);
 
   return (
-    <div className="min-h-screen">
-      <main className="flex justify-center items-center min-h-[calc(100vh-64px)]">
-        <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md text-center">
-          
-          {/** Introduction Content */}
-          <h2 className="text-xl font-bold mb-4">
-            Create your Own Adventure
-          </h2>
+    <div className="min-h-screen flex items-center justify-center">
+      <main className="backdrop-blur-xl bg-white/30 shadow-2xl rounded-3xl p-10 w-full max-w-md text-center border border-white/50">
+        {/** Introduction Content */}
+        <h2 className="text-3xl font-extrabold mb-4 text-primary">
+          Create your Own Adventure
+        </h2>
 
-          <p className="text-gray-700">
-            Welcome to my CYOA app! <br />
-            This is a simple CYOA app that allows you to create your own
-            adventure.
+        <p className="text-gray-800 text-lg">
+          Welcome to my CYOA app! <br />
+          This is a simple CYOA app that allows you to create your own
+          adventure.
+        </p>
 
-            {/** For Testing Backend Fetch */}
-            {message === 'Ok' && status === 'active' ? (
-              <CheckIcon className="w-6 h-6 text-green-500" />
-            ) : (
-              <XMarkIcon className="w-6 h-6 text-red-500" />
-            )}
-          </p>
+        <div className='mt-4'>
+          {/** For Testing Backend Fetch */}
+          {message === 'Ok' && status === 'active' ? (
+            <CheckIcon className="w-8 h-8 text-green-500 animate-pulse inline" />
+          ) : (
+            <XMarkIcon className="w-8 h-8 text-red-500 inline" />
+          )}
         </div>
       </main>
     </div>
