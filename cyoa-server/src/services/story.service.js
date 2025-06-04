@@ -48,7 +48,6 @@ exports.generateIntro = async (introScenario) => {
     You are given a scenario and you need to generate a story based on the scenario.
     Scenario: "${introScenario}"
     Please provide a maximum of 3 different choices for the user to choose from to get the story started.
-    Also, continue this for the next story segment(s) based on the user's choice.
     The choices should be in the format of "1.", "2.", "3.", etc.
     `;
 

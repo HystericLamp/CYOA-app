@@ -24,7 +24,7 @@ const Introduction = () => {
     <div className="min-h-screen flex items-center justify-center">
       <main className="backdrop-blur-xl bg-white/30 shadow-2xl rounded-3xl p-10 w-full max-w-md text-center border border-white/50">
         {/** Introduction Content */}
-        <h2 className="text-3xl font-extrabold mb-4 text-primary">
+        <h2 className="text-3xl font-extrabold mb-4 text-primary header-title">
           Create your Own Adventure
         </h2>
 

@@ -3,9 +3,9 @@ import { getStoryIntro, postNextStoryPrompt } from "../api/storyService";
 
 export const useStory = () => {
     const [story, setStory] = useState([]);
-    const [scenario, setScenario] = useState('');
     const [choices, setChoices] = useState([]);
     const [selectedChoice, setChoice] = useState('');
+    const [isAnimating, setIsAnimating] = useState(false);
     const hasFetched = useRef(false);
 
     useEffect(() => {
@@ -15,8 +15,7 @@ export const useStory = () => {
         const fetchStoryIntro = async () => {
             try {
                 const data = await getStoryIntro('story');
-                setScenario(data.scenario);
-                setStory([data.scenario]);
+                setStory([{ type: 'scenario', text: data.scenario }]);
                 setChoices(data.choices);
             } catch (error) {
                 console.error('Fetching story introduction failed', error);
@@ -37,8 +36,11 @@ export const useStory = () => {
         try {
             const data = await postNextStoryPrompt('story', { userAction: selectedChoice });
 
-            setScenario(data.result);
-            setStory(prev => [...prev, selectedChoice, data.result]);
+            setStory(prev => [
+                                ...prev, 
+                                { type: 'choice', text: selectedChoice },
+                                { type: 'scenario', text: data.result }
+                            ]);
             setChoices([]);
             setChoices(data.choices);
         } catch (error) {
@@ -48,10 +50,11 @@ export const useStory = () => {
 
     return {
         story,
-        scenario,
         choices,
         selectedChoice,
         setChoice,
         submitStoryChoice,
+        isAnimating,
+        setIsAnimating
     };
 }
