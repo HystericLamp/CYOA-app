@@ -5,6 +5,7 @@ export const useStory = () => {
     const [story, setStory] = useState([]);
     const [choices, setChoices] = useState([]);
     const [selectedChoice, setChoice] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
     const hasFetched = useRef(false);
 
@@ -33,18 +34,27 @@ export const useStory = () => {
             return;
         }
 
+        setIsLoading(true);
+
+        setStory(prev => [
+            ...prev,
+            { type: 'choice', text: selectedChoice }
+        ]);
+        setChoices([]);
+
         try {
             const data = await postNextStoryPrompt('story', { userAction: selectedChoice });
 
             setStory(prev => [
                                 ...prev, 
-                                { type: 'choice', text: selectedChoice },
                                 { type: 'scenario', text: data.result }
                             ]);
             setChoices([]);
             setChoices(data.choices);
         } catch (error) {
             console.error('Fetching next story scenario failed', error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -54,6 +64,7 @@ export const useStory = () => {
         selectedChoice,
         setChoice,
         submitStoryChoice,
+        isLoading,
         isAnimating,
         setIsAnimating
     };

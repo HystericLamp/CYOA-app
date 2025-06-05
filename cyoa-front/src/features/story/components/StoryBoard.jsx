@@ -30,7 +30,9 @@ function StoryBoard() {
 
             return (
                 <p key={index} className={className}>
-                {index <= doneAnimatingIndex ? (
+                {line.type === 'choice' ? (
+                    line.text
+                ) : index <= doneAnimatingIndex ? (
                     line.text
                 ) : isLast ? (
                     <TypewriterText

@@ -5,10 +5,8 @@ import { StoryProvider } from "../../features/story/context/StoryContext";
 
 const Story = () => {
     // TODO:
-    // Add type-writer animations
-    // Add loading states
-    // Refactor
     // Make sure OpenAI will end the story
+    // Build up Readme
 
     return(
         <StoryProvider>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useStoryContext } from '../context/StoryContext';
 
 /**
@@ -7,14 +7,7 @@ import { useStoryContext } from '../context/StoryContext';
  * @returns
  */
 function ChoicesForm() {
-    const { submitStoryChoice, setChoice, choices, isAnimating } = useStoryContext();
-
-    useEffect(() => {
-        // Remove focus from currently focused element when choices update
-        if (document.activeElement instanceof HTMLElement) {
-            document.activeElement.blur();
-        }
-    }, [choices]);
+    const { submitStoryChoice, setChoice, choices, isLoading, isAnimating } = useStoryContext();
 
     return (
         <form onSubmit={submitStoryChoice} className="p-4">
@@ -24,10 +17,10 @@ function ChoicesForm() {
                         type='submit'
                         key={index} 
                         value={choice}
-                        disabled={isAnimating}
+                        disabled={isLoading || isAnimating}
                         onClick={() => setChoice(choice)}
-                        className={`relative overflow-hidden group px-6 py-3 rounded-2xl text-white shadow-lg transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2
-                        ${isAnimating 
+                        className={`relative overflow-hidden group px-6 py-3 rounded-2xl text-white shadow-lg transition-all duration-300 ease-in-out
+                        ${isLoading || isAnimating 
                             ? 'bg-gray-400 cursor-not-allowed' 
                             : 'bg-gradient-to-r from-blue-600 to-blue-400 hover:scale-105 hover:from-blue-500 hover:to-blue-300 focus:ring-blue-300 cursor-pointer'
                         }`}
