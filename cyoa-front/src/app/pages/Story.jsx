@@ -4,10 +4,6 @@ import ChoicesForm from "../../features/story/components/ChoicesForm";
 import { StoryProvider } from "../../features/story/context/StoryContext";
 
 const Story = () => {
-    // TODO:
-    // Make sure OpenAI will end the story
-    // Build up Readme
-
     return(
         <StoryProvider>
             <div className="min-h-screen pt-16 flex flex-col items-center py-12 px-4">
