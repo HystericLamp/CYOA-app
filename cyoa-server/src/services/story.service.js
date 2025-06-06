@@ -3,16 +3,21 @@ const { openai, MODEL } = require('../config/openai');
 /**
  * Generate a response from the OpenAI API based on the user's action
  * @param {string} userAction - The user's action to generate a response from
+ * @param {number} storyStep - The current step number of the story
  * @returns {string} - The response from the OpenAI API
  */
-exports.generateNextStory = async (userAction) => {
+exports.generateNextStory = async (userAction, storyStep) => {
     const prompt = `
     The user has made the following choice: "${userAction}"
-    Please continue the story based on the user's choice.
-    Provide a result of the user's choice to the story.
+    This is step ${storyStep} of the story.
+
+    Continue the story based on the user's choice.
     The result should be a maximum of 2 paragraphs.
-    And provide a maximum of 3 different choices for the user to choose from to continue the story, unless result is a dead end to the story.
-    The choices should be in the format of "1.", "2.", "3.", etc.
+
+    If the story feels naturally complete, or this is step ${storyStep >= 5 ? storyStep : '{storyStep}'}, end the story with a proper conclusion and do NOT provide more choices.
+
+    If the story continues, provide a maximum of 3 different choices for the user to choose from in the format:
+    "1.", "2.", "3.", etc.
     `;
 
     try {

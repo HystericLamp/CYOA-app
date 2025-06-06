@@ -39,7 +39,16 @@ exports.generateIntroStory = async(request, response) => {
  */
 exports.nextStoryPrompt = async (request, response) => {
     const { userAction } = request.body;
-    const nextStory = await generateNextStory(userAction);
+
+    // Initialize session tracking if not already set
+    if (!request.session.storySteps) {
+        request.session.storySteps = [];
+    }
+
+    request.session.storySteps.push(userAction);
+    const storyStep = request.session.storySteps.length + 1;
+
+    const nextStory = await generateNextStory(userAction, storyStep);
     const result = extractResult(nextStory);
     const choices = extractChoices(nextStory);
 
@@ -47,13 +56,15 @@ exports.nextStoryPrompt = async (request, response) => {
         // If there are no choices, the story is over
         response.json({
             result: result,
-            end: true
+            end: true,
+            path: request.session.storySteps
         });
     } else {
         // If there are choices, the story continues
         response.json({
             result: result,
-            choices: choices
+            choices: choices,
+            path: request.session.storySteps
         });
     }
 };
