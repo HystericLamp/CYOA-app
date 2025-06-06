@@ -11,12 +11,18 @@ function StoryBoard() {
     const { story, setIsAnimating } = useStoryContext();
     const [doneAnimatingIndex, setDoneAnimatingIndex] = useState(-1);
 
+    // Reset doneAnimatingIndex on story reset/new story load
     useEffect(() => {
-    // If there's new text, start animating
-    if (doneAnimatingIndex < story.length - 1) {
-        setIsAnimating(true);
-    }
+        setDoneAnimatingIndex(-1);
     }, [story]);
+
+    // If there's new text, start animating
+    useEffect(() => {
+        if (doneAnimatingIndex < story.length - 1) {
+            setIsAnimating(true);
+        }
+
+    }, [doneAnimatingIndex, setIsAnimating, story]);
 
     return (
         <div className="text-gray-800 mb-6 space-y-4">
@@ -36,13 +42,17 @@ function StoryBoard() {
                     line.text
                 ) : isLast ? (
                     <TypewriterText
+                        key={line.text}
                         text={line.text}
                         onDone={() => {
                             setDoneAnimatingIndex(index);
                             setIsAnimating(false);
                         }}
                     />
-                ) : null}
+                ) : (
+                    // Show all previous lines immediately
+                    line.text
+                )}
                 </p>
             );
             })}

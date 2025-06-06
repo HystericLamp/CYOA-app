@@ -1,14 +1,24 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const session = require('express-session');
 const routes = require('./routes');
-const session = require('express-session')
 
 const app = express();
 
-app.use(cors());
+const isProduction = process.env.NODE_ENV === 'production';
+const clientOrigin = isProduction
+  ? process.env.CLIENT_ORIGIN_PROD
+  : process.env.CLIENT_ORIGIN_DEV;
+
+app.use(cors({
+  origin: clientOrigin,
+  credentials: true
+}));
+
+
 app.use(express.json());
-app.use('/', routes);
+
 app.use(session ({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -20,5 +30,8 @@ app.use(session ({
         maxAge: null
     }
 }));
+
+app.use('/', routes);
+
 
 module.exports = app;

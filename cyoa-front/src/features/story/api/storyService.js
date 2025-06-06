@@ -1,5 +1,10 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+/**
+ * Function that makes a GET request to /story that starts the story intro scenario and choices
+ * @param {*} endpoint - endpoint string "story"
+ * @returns an introductory scenario and 3 choices
+ */
 export const getStoryIntro = async (endpoint) => {
     try {
         const response = await fetch(`${API_BASE_URL}/${endpoint}`);
@@ -15,6 +20,13 @@ export const getStoryIntro = async (endpoint) => {
     }
 }
 
+/**
+ * Function that makes a POST request to /story that gets the next story scenario and choices
+ * based on userAction
+ * @param {*} endpoint - endpoint string "story"
+ * @param {*} userAction - string of the choice user has chosen
+ * @returns next story scenario and choices
+ */
 export const postNextStoryPrompt = async (endpoint, userAction) => {
     try {
         const response = await fetch(`${API_BASE_URL}/${endpoint}`, {

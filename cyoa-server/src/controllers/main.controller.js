@@ -3,6 +3,7 @@ const { generateIntro, generateNextStory, extractChoices, extractResult } = requ
 
 /**
  * Check if the server is running
+ * Mostly here as a test in early stages of development
  * @param {*} request 
  * @param {*} response 
  */
@@ -56,6 +57,7 @@ exports.nextStoryPrompt = async (request, response) => {
         // If there are no choices, the story is over
         response.json({
             result: result,
+            choices: [],
             end: true,
             path: request.session.storySteps
         });
@@ -64,7 +66,22 @@ exports.nextStoryPrompt = async (request, response) => {
         response.json({
             result: result,
             choices: choices,
+            end: false,
             path: request.session.storySteps
         });
     }
+};
+
+/**
+ * Reset the current user's story session
+ * Clears storySteps and any other related session data
+ * @param {*} request 
+ * @param {*} response 
+ */
+exports.resetStory = (request, response) => {
+    request.session.storySteps = [];
+    response.json({ 
+        message: 'Story session reset.',
+        reset: true
+    });
 };

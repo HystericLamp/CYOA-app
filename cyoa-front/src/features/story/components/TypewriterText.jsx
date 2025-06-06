@@ -12,6 +12,11 @@ const TypewriterText = ({ text, speed = 30, onDone }) => {
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
+        console.log('resetting index')
+        setIndex(0);
+    }, [text]);
+
+    useEffect(() => {
         if (index < text.length) {
             const timeout = setTimeout(() => {
             setIndex(prev => prev + 1);

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { getStoryIntro, postNextStoryPrompt } from "../api/storyService";
+import { postReset } from "../api/resetService";
 
 export const useStory = () => {
     const [story, setStory] = useState([]);
@@ -7,25 +8,34 @@ export const useStory = () => {
     const [selectedChoice, setChoice] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
+    const [isEnd, setIsEnd] = useState(false);
     const hasFetched = useRef(false);
+
+    /**
+     * Handles logic for setting up the introductory story scenario and choices
+     */
+    const fetchStoryIntro = async () => {
+        try {
+            const data = await getStoryIntro('story');
+            setStory([{ type: 'scenario', text: data.scenario }]);
+            setChoices(data.choices);
+            setIsEnd(false);
+        } catch (error) {
+            console.error('Fetching story introduction failed', error);
+        }
+    };
 
     useEffect(() => {
         if (hasFetched.current) return;
         hasFetched.current = true;
 
-        const fetchStoryIntro = async () => {
-            try {
-                const data = await getStoryIntro('story');
-                setStory([{ type: 'scenario', text: data.scenario }]);
-                setChoices(data.choices);
-            } catch (error) {
-                console.error('Fetching story introduction failed', error);
-            }
-        }
-
         fetchStoryIntro();
     }, []);
 
+    /**
+     * Handles logic when a user clicks a choice button in storyboard and builds up the story
+     * @param {*} event 
+     */
     const submitStoryChoice = async (event) => {
         event.preventDefault();
 
@@ -51,10 +61,39 @@ export const useStory = () => {
                             ]);
             setChoices([]);
             setChoices(data.choices);
+
+            if (data.end) {
+                setIsEnd(data.end);
+            }
+
         } catch (error) {
             console.error('Fetching next story scenario failed', error);
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    /**
+     * When the user presses the reset button, resets story, story choices, and session
+     * @param {*} event 
+     */
+    const submitHandleReset = async (event) => {
+        event.preventDefault();
+
+        try {
+            const data = await postReset('reset');
+
+            if (data.reset) {
+                setStory([]);
+                setChoices([]);
+                setChoice('');
+                setIsEnd(false);
+                hasFetched.current = false;
+
+                await fetchStoryIntro();
+            }
+        } catch (error) {
+            console.error('Submit handle reset failed', error);
         }
     };
 
@@ -64,8 +103,10 @@ export const useStory = () => {
         selectedChoice,
         setChoice,
         submitStoryChoice,
+        submitHandleReset,
         isLoading,
         isAnimating,
-        setIsAnimating
+        setIsAnimating,
+        isEnd
     };
 }

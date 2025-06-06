@@ -7,7 +7,7 @@ import { useStoryContext } from '../context/StoryContext';
  * @returns
  */
 function ChoicesForm() {
-    const { submitStoryChoice, setChoice, choices, isLoading, isAnimating } = useStoryContext();
+    const { submitStoryChoice, setChoice, choices, isLoading, isAnimating, isEnd } = useStoryContext();
 
     return (
         <form onSubmit={submitStoryChoice} className="p-4">
@@ -28,6 +28,13 @@ function ChoicesForm() {
                         {choice}
                     </button>
                 ))}
+
+                <h4 className='font-semibold'>
+                    {isEnd == true 
+                        ? 'The END'
+                        : ''
+                    }
+                </h4>
             </div>
         </form>
     );

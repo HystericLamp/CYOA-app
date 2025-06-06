@@ -76,9 +76,16 @@ exports.generateIntro = async (introScenario) => {
  * @returns {string} - The result of the user's choice
  */
 exports.extractResult = (resultText) => {
-    const resultRegex = /^[\s\S]*?(?=\n\s*1\.)/;
-    const result = resultText.match(resultRegex);
-    return result[0].trim();
+    try {
+        const resultRegex = /^[\s\S]*?(?=\n\s*1\.)/;
+        const result = resultText.match(resultRegex);
+        return result[0].trim();
+    } catch (TypeError) {
+        // Most likely, result has no choices and can't trim cuz nothing was found in regex
+        // Thus the end
+        // Could be implemented better by encapsulating story end logic
+        return resultText;
+    }
 }
 
 /**
