@@ -46,8 +46,6 @@ exports.nextStoryPrompt = async (request, response) => {
         request.session.storySteps = [];
     }
 
-    // TODO: Make tests for reset and storyStep session
-    // Logging this, storyStep always comes as 2
     request.session.storySteps.push(userAction);
     const storyStep = request.session.storySteps.length;
 
