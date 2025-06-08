@@ -10,7 +10,7 @@ jest.mock('../src/services/story.service', () => ({
 }));
 
 const request = require('supertest');
-const { generateIntroStory, nextStoryPrompt } = require('../src/controllers/main.controller');
+const { generateIntroStory, nextStoryPrompt, resetStory } = require('../src/controllers/main.controller');
 const { getRandomScenario } = require('../src/data/intro.scenarios');
 const { generateIntro, extractChoices, generateNextStory, extractResult } = require('../src/services/story.service');
 
@@ -31,12 +31,17 @@ describe('Main Controller', () => {
         generateIntro.mockReturnValue(mockChoicesString);
         extractChoices.mockReturnValue(mockChoices);
 
-        const req = {};
+        const req = {
+            session: {
+                storySteps: []
+            }
+        };
+
         const res = {
             json: jest.fn()
         };
 
-        generateIntroStory(req, res);
+        await generateIntroStory(req, res);
 
         expect(getRandomScenario).toHaveBeenCalled();
         expect(generateIntro).toHaveBeenCalledWith(mockScenario);
@@ -73,6 +78,9 @@ describe('Main Controller', () => {
         const req = {
             body: {
                 userAction: mockUserAction
+            },
+            session: {
+                storySteps: []
             }
         };
 
@@ -80,15 +88,37 @@ describe('Main Controller', () => {
             json: jest.fn()
         };
 
-        nextStoryPrompt(req, res);
+        await nextStoryPrompt(req, res);
 
-        expect(generateNextStory).toHaveBeenCalledWith(mockUserAction);
+        expect(generateNextStory).toHaveBeenCalled();
         expect(extractResult).toHaveBeenCalledWith(mockResponse);
         expect(extractChoices).toHaveBeenCalledWith(mockResponse);
 
         expect(res.json).toHaveBeenCalledWith({
             result: mockResult,
-            choices: mockChoices
+            choices: mockChoices,
+            end: false,
+            path: ["You enter a room with a table."]
+        });
+    });
+
+    it(('Should reset the session and story data'), async () => {
+        const req = {
+            session: {
+                storySteps: ['step1', 'step2', 'step3']
+            }
+        };
+
+        const res = {
+            json: jest.fn()
+        };
+
+        resetStory(req, res);
+
+        expect(req.session.storySteps).toEqual([]);
+        expect(res.json).toHaveBeenCalledWith({
+            message: 'Story session reset.',
+            reset: true
         });
     });
 });

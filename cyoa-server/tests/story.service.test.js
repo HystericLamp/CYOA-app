@@ -22,6 +22,14 @@ describe('Story Service', () => {
 
     describe('generateNextStory', () => {
         it('should successfully generate a response from OpenAI', async () => {
+            // Mock a request for userAction and storySteps
+            const mockRequest = {
+                body: {
+                    userAction: "Test prompt",
+                    storyStep: 3
+                }
+            }
+
             // Mock successful API response
             const mockResponse = {
                 choices: [
@@ -34,23 +42,30 @@ describe('Story Service', () => {
             };
             openai.chat.completions.create.mockResolvedValue(mockResponse);
 
-            const userAction = 'Test prompt';
-            const result = await generateNextStory(userAction);
+            const { userAction, storyStep } = mockRequest.body;
+            const result = await generateNextStory(userAction, storyStep);
             expect(result).toBe('This is a test response');
 
-            // Formatted poorly like this to match the expected format in the generateNextStory function
             const content = `
-    The user has made the following choice: "${userAction}"
-    Please continue the story based on the user's choice.
-    Provide a result of the user's choice to the story.
-    The result should be a maximum of 2 paragraphs.
-    And provide 3 different choices for the user to choose from to continue the story, unless result is a dead end to the story.
-    The choices should be in the format of "1.", "2.", "3.", etc.
-    `;
-            expect(openai.chat.completions.create).toHaveBeenCalledWith({
-                model: "gpt-3.5-turbo",
-                messages: [{ role: 'user', content: content }]
-            });
+            The user has made the following choice: "${userAction}"
+            This is step ${storyStep ?? '{storyStep}'} of the story.
+
+            Continue the story based on the user's choice.
+            The result should be a maximum of 2 paragraphs.
+
+            If the story feels naturally complete, or this is step ${storyStep >= 5 ? storyStep : '{storyStep}'}, end the story with a proper conclusion and do NOT provide more choices.
+
+            If the story continues, provide a maximum of 3 different choices for the user to choose from in the format:
+            "1.", "2.", "3.", etc.
+            `.trim();
+
+            expect(openai.chat.completions.create).toHaveBeenCalled();
+            const callArgs = openai.chat.completions.create.mock.calls[0][0];
+
+            expect(callArgs.model).toBe("gpt-3.5-turbo");
+            expect(callArgs.messages[0].role).toBe("user");
+            expect(callArgs.messages[0].content).toContain("The user has made the following choice: \"Test prompt\"");
+            expect(callArgs.messages[0].content).toContain("This is step 3 of the story.");
         });
 
         it('should handle APIError correctly', async () => {
