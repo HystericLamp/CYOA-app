@@ -34,7 +34,7 @@ _An app that builds a story spontaneously_
 
 ## 📂 Project Structure
 
-/cyoa-front -> React frontend
+/cyoa-front -> React frontend<br>
 /cyoa-server -> Express/REST backend
 
 ## 💡 Features
