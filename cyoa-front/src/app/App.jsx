@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import Layout from './components/Layout';
-import Introduction from './app/pages/Introduction';
-import Story from './app/pages/Story';
+import Layout from '../components/Layout';
+import Introduction from './pages/Introduction';
+import Story from './pages/Story';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 if (!API_BASE_URL) {
