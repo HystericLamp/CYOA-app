@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "postbuild": "curl -s https://cyoa-app.onrender.com",
     "lint": "eslint .",
     "preview": "vite preview"
   },

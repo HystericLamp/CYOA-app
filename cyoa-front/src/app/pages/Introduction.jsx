@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { getIntro } from '../../features/intro/api/introService';
-import { CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import { fetchWithWakeup } from '../../utils/fetchWithWakeup';
 
 const Introduction = () => {
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchIntro = async () => {
       try {
-        const data = await getIntro();
+        const data = await fetchWithWakeup(getIntro, { retries: 1, timeout: 15000 });
         setMessage(data.message);
         setStatus(data.status);
       } catch (error) {
         console.error('Error fetching intro:', error);
+        setError('Unable to connect to the server. Please try again.');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -32,16 +37,21 @@ const Introduction = () => {
           Welcome to my CYOA app! <br />
           This is a simple CYOA app that allows you to create your own
           adventure.
-        </p>
+        </p><br/>
 
-        <div className='mt-4'>
-          {/** For Testing Backend Fetch */}
-          {message === 'Ok' && status === 'active' ? (
-            <CheckIcon className="w-8 h-8 text-green-500 animate-pulse inline" />
-          ) : (
-            <XMarkIcon className="w-8 h-8 text-red-500 inline" />
-          )}
-        </div>
+        {loading ? (
+          <div className="text-blue-600 font-medium animate-pulse">
+            Waking up the server, please wait...
+          </div>
+        ) : error ? (
+          <div className="text-red-600 font-medium">
+            {error}
+          </div>
+        ) : (
+          <div className="text-green-600 font-medium">
+            App is ready! Message: {message}, Status: {status}
+          </div>
+        )}
       </main>
     </div>
   );
