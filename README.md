@@ -1,8 +1,8 @@
 # 📁 Cyoa App
 
-_A brief one-liner describing your project._
+_An app that builds a story spontaneously_
 
-> Example: A full-stack portfolio web app showcasing my projects, built with React, Express, and a REST API.
+> A full-stack web app built with React/Tailwind and Express/REST. Create and build your own story with spontaneous story generation with OpenAI.
 
 ---
 
@@ -25,6 +25,7 @@ _A brief one-liner describing your project._
 - Express
 - JavaScript
 - REST API  
+- OpenAI API
 
 **Other:**  
 - Netlify & Render hosting
@@ -38,8 +39,9 @@ _A brief one-liner describing your project._
 
 ## 💡 Features
 
-- Responsive and accessible UI built with React  
-- RESTful API with Express   
+- Responsive and accessible UI built with React and Tailwind CSS
+- RESTful API with Express
+- Spontaneous story-telling with OpenAI
 
 ---
 
@@ -47,7 +49,7 @@ _A brief one-liner describing your project._
 
 1️⃣ **Clone the repository**
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/HystericLamp/CYOA-app.git
 cd your-repo-name
 ```
 
@@ -81,11 +83,3 @@ npm run dev
 # Must be in the root directory
 npm run dev
 ```
-
-## 🧪 Api Endpoints
-| Method | Endpoint            | Description          |
-| ------ | ------------------- | -------------------- |
-| GET    | `/api/projects`     | Get all projects     |
-| POST   | `/api/projects`     | Create a new project |
-| PUT    | `/api/projects/:id` | Update a project     |
-| DELETE | `/api/projects/:id` | Delete a project     |
