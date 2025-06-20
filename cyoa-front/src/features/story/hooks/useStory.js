@@ -1,27 +1,38 @@
 import { useState, useEffect, useRef } from "react";
+import { fetchWithWakeup } from '../../../utils/fetchWithWakeup';
 import { getStoryIntro, postNextStoryPrompt } from "../api/storyService";
 import { postReset } from "../api/resetService";
 
 export const useStory = () => {
+    // For use with fetchWithWakeup
+    const [loadingServer, setLoadingServer] = useState(true);
+    const [error, setError] = useState('');
+
+    // Storyboard related
     const [story, setStory] = useState([]);
     const [choices, setChoices] = useState([]);
     const [selectedChoice, setChoice] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
     const [isEnd, setIsEnd] = useState(false);
+
     const hasFetched = useRef(false);
 
     /**
      * Handles logic for setting up the introductory story scenario and choices
+     * Should be called when page loads
      */
     const fetchStoryIntro = async () => {
         try {
-            const data = await getStoryIntro('story');
+            const data = await fetchWithWakeup(getStoryIntro('story'), { retries: 1, timeout: 15000 });
             setStory([{ type: 'scenario', text: data.scenario }]);
             setChoices(data.choices);
             setIsEnd(false);
         } catch (error) {
             console.error('Fetching story introduction failed', error);
+            setError('Unable to connect to the server. Please try again.');
+        } finally {
+            setLoadingServer(false);
         }
     };
 
@@ -98,6 +109,9 @@ export const useStory = () => {
     };
 
     return {
+        loadingServer,
+        error,
+        
         story,
         choices,
         selectedChoice,

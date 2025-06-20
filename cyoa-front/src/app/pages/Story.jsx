@@ -16,18 +16,14 @@ const Story = () => {
                     <ResetForm />
                 </div>
 
-                <div className="bg-white rounded-3xl shadow-lg p-8 w-full max-w-2xl transition-all duration-500">
-                    <StoryBoard />
-                </div>
+                <StoryBoard />
 
                 {/* Choices Form */}
                 <h2 className="text-3xl font-bold text-primary mt-8">
                     💡 <span className="header-title">Select your Choice</span>
                 </h2>
 
-                <div className="bg-white rounded-3xl shadow-lg mt-6 w-full max-w-2xl transition-all duration-500">
-                    <ChoicesForm />
-                </div>
+                <ChoicesForm />
             </div>
         </StoryProvider>
     );

@@ -5,7 +5,7 @@ import { fetchWithWakeup } from '../../utils/fetchWithWakeup';
 const Introduction = () => {
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loadingServer, setLoadingServer] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const Introduction = () => {
         console.error('Error fetching intro:', error);
         setError('Unable to connect to the server. Please try again.');
       } finally {
-        setLoading(false);
+        setLoadingServer(false);
       }
     };
 
@@ -39,7 +39,7 @@ const Introduction = () => {
           adventure.
         </p><br/>
 
-        {loading ? (
+        {loadingServer ? (
           <div className="text-blue-600 font-medium animate-pulse">
             Waking up the server, please wait...
           </div>
