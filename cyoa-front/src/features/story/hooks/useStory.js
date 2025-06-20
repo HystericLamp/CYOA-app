@@ -24,7 +24,10 @@ export const useStory = () => {
      */
     const fetchStoryIntro = async () => {
         try {
-            const data = await fetchWithWakeup(getStoryIntro('story'), { retries: 1, timeout: 15000 });
+            const data = await fetchWithWakeup(
+                (options) => getStoryIntro('story', options), 
+                { retries: 1, timeout: 15000 }
+            );
             setStory([{ type: 'scenario', text: data.scenario }]);
             setChoices(data.choices);
             setIsEnd(false);
