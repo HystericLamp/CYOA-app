@@ -35,8 +35,8 @@ const Introduction = () => {
 
         <p className="text-gray-800 text-lg">
           Welcome to my CYOA app! <br />
-          This is a simple CYOA app that allows you to create your own
-          adventure.
+          This is an app that builds and shapes a story based on the you.
+          You will be given a scenario and choices that you will choose to shape the story.
         </p><br/>
 
         {loadingServer ? (
